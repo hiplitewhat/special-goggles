@@ -7,7 +7,6 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.Toast
@@ -43,7 +42,6 @@ class FloatingIconManager(private val context: Context) {
             }
             format = PixelFormat.TRANSLUCENT
             flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
                     WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
 
             width = dpToPx(56)
@@ -80,10 +78,6 @@ class FloatingIconManager(private val context: Context) {
                     lastX = event.rawX.toInt()
                     lastY = event.rawY.toInt()
                     isDragging = false
-
-                    // Enable touch for dragging
-                    updateWindowParams(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
                     true
                 }
 
@@ -115,24 +109,11 @@ class FloatingIconManager(private val context: Context) {
                         handleIconClick()
                     }
 
-                    // Disable touch after interaction
-                    updateWindowParams(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
-                            WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
                     isDragging = false
                     true
                 }
 
                 else -> false
-            }
-        }
-    }
-
-    private fun updateWindowParams(flags: Int) {
-        params?.let {
-            it.flags = flags
-            floatingView?.let { view ->
-                windowManager.updateViewLayout(view, it)
             }
         }
     }

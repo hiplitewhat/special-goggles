@@ -1,8 +1,8 @@
 # Gradle
 .gradle/
+.android-sdk/
 build/
 gradle-app.setting
-!gradle-wrapper.jar
 .gradletasknamecache
 
 # Android Studio
@@ -13,6 +13,7 @@ gradle-app.setting
 *.class
 *.dex
 *.jar
+!gradle/wrapper/gradle-wrapper.jar
 *.log
 *.ktx
 *.zip
