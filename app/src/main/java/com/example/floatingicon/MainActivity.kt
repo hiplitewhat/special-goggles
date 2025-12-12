@@ -1,6 +1,8 @@
 package com.example.floatingicon
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -24,11 +26,7 @@ class MainActivity : AppCompatActivity() {
         config = FloatingIconConfig(this)
 
         binding.startButton.setOnClickListener {
-            if (canDrawOverlays()) {
-                startOverlay()
-            } else {
-                requestOverlayPermission()
-            }
+            startOverlayWithPermissions()
         }
 
         binding.stopButton.setOnClickListener {
@@ -41,6 +39,27 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updateUI()
+    }
+
+    private fun startOverlayWithPermissions() {
+        if (!canDrawOverlays()) {
+            requestOverlayPermission()
+            return
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val granted = checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) ==
+                PackageManager.PERMISSION_GRANTED
+            if (!granted) {
+                requestPermissions(
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    REQUEST_POST_NOTIFICATIONS
+                )
+                return
+            }
+        }
+
+        startOverlay()
     }
 
     private fun startOverlay() {
@@ -95,11 +114,31 @@ class MainActivity : AppCompatActivity() {
             .show()
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == REQUEST_POST_NOTIFICATIONS) {
+            val granted = grantResults.isNotEmpty() &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED
+            if (granted) {
+                startOverlayWithPermissions()
+            }
+        }
+    }
+
     private fun isServiceRunning(serviceClass: Class<*>): Boolean {
         val manager = getSystemService(ACTIVITY_SERVICE) as android.app.ActivityManager
         @Suppress("DEPRECATION")
         return manager.getRunningServices(Integer.MAX_VALUE).any { service ->
             service.service.className == serviceClass.name
         }
+    }
+
+    private companion object {
+        const val REQUEST_POST_NOTIFICATIONS = 1001
     }
 }
