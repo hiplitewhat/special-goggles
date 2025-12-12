@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Floating Icon Overlay</string>
+    <string name="floating_icon_label">Floating Icon</string>
+    <string name="start_overlay">Start Overlay</string>
+    <string name="stop_overlay">Stop Overlay</string>
+    <string name="overlay_description">System-level floating icon overlay</string>
+    <string name="overlay_running">Overlay is running</string>
+    <string name="overlay_stopped">Overlay stopped</string>
+    <string name="notification_title">Floating Icon Active</string>
+    <string name="notification_text">Tap to manage floating icon overlay</string>
+</resources>

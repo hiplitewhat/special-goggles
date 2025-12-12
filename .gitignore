@@ -1,0 +1,40 @@
+# Gradle
+.gradle/
+build/
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
+
+# Android Studio
+.idea/
+*.iml
+*.apk
+*.ap_
+*.class
+*.dex
+*.jar
+*.log
+*.ktx
+*.zip
+*.war
+*.ear
+*.apks
+*.aar
+*.mobileprovision
+*.orig
+*.swp
+*~
+
+# Local properties
+local.properties
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+*.sublime-*
+
+# Build artifacts
+app/build/
